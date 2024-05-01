@@ -8,5 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Core/Scenes/Overworld.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/_Core/Scenes/BattleScene.unity
+    guid: 6bd72cdff77b2f249b11f32f96cda205
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

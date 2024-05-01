@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask grassLayer;
     [SerializeField] private int stepsInGrass;
 
+    [SerializeField] private int minStepsToEncounter;
+    [SerializeField] private int maxStepsToEncounter;
+
     [Header(" Components ")]
     private PlayerControls playerControls;
     private Rigidbody rb;
@@ -20,8 +22,10 @@ public class PlayerController : MonoBehaviour
     private bool movingInGrass;
     private float stepTimer;
 
+    private const string BATTLE_SCENE = "BattleScene";
     private const string IS_WALK_PARAM = "IsMoving";
     private const float timePerStep = 0.5f;
+    private int stepsToEncounter;
 
     private void Awake()
     {
@@ -41,6 +45,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        CalculateStepsToNextEncounter();
     }
 
     // Update is called once per frame
@@ -78,7 +83,17 @@ public class PlayerController : MonoBehaviour
             {
                 stepsInGrass++;
                 stepTimer = 0;
+
+                if (stepsInGrass >= stepsToEncounter)
+                {
+                    SceneManager.LoadScene(BATTLE_SCENE);
+                }
             }
         }
+    }
+
+    private void CalculateStepsToNextEncounter()
+    {
+        stepsToEncounter = Random.Range(minStepsToEncounter, maxStepsToEncounter);
     }
 }
