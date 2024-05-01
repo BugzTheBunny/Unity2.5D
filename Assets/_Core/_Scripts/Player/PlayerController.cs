@@ -10,12 +10,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private SpriteRenderer playerSprite;
 
+    [SerializeField] private LayerMask grassLayer;
+    [SerializeField] private int stepsInGrass;
+
     [Header(" Components ")]
     private PlayerControls playerControls;
     private Rigidbody rb;
     private Vector3 moveVector;
+    private bool movingInGrass;
+    private float stepTimer;
 
     private const string IS_WALK_PARAM = "IsMoving";
+    private const float timePerStep = 0.5f;
 
     private void Awake()
     {
@@ -25,7 +31,7 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         playerControls.Enable();
-    }
+    } 
 
     private void OnDisable()
     {
@@ -34,7 +40,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -61,5 +67,18 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         rb.MovePosition(transform.position + moveVector * moveSpeed * Time.deltaTime);
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 1, grassLayer);
+        movingInGrass = colliders.Length!=0 && moveVector != Vector3.zero;
+
+        if (movingInGrass)
+        {
+            stepTimer += Time.fixedDeltaTime;
+            if (stepTimer > timePerStep)
+            {
+                stepsInGrass++;
+                stepTimer = 0;
+            }
+        }
     }
 }
