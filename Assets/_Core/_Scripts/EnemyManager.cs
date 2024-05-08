@@ -41,6 +41,8 @@ public class EnemyManager : MonoBehaviour
         currentEnemies.Add(enemy);
 
     }
+
+    public List<Enemy> GetCurrentEnemies() => currentEnemies;
 }
 
 [System.Serializable]

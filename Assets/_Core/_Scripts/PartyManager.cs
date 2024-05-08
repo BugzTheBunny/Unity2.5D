@@ -41,6 +41,8 @@ public class PartyManager : MonoBehaviour
         currentParty.Add(member);
         Debug.Log("Added!");
     }
+
+    public List<PartyMember> GetCurrentMembers() => currentParty;
 }
 
 [System.Serializable]
